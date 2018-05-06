@@ -14,6 +14,8 @@ public class Simulator {
     static final int NO_OF_QUEUE = 2;
     static final int NO_OF_COUNTER = 4;
     static ArrayList<Customer> input = new ArrayList<>();
+    static ArrayList<Integer> vip = new ArrayList();
+    static ArrayList<Integer> normal = new ArrayList();
     static Queue[] queues = new Queue[NO_OF_QUEUE];
     static Counter[] counters = new Counter[NO_OF_COUNTER];
     static int time =-1;
@@ -26,6 +28,7 @@ public class Simulator {
     private JButton saveLog;
     private JButton saveReport;
     BarChart chart;
+    XYLineChart xychart;
     private String printText;
     private StringBuilder logText = new StringBuilder();
     private StringBuilder reportText = new StringBuilder();
@@ -63,6 +66,11 @@ public class Simulator {
                         chart.pack();
                         RefineryUtilities.centerFrameOnScreen(chart);
                         chart.setVisible(true);
+                        xychart = new XYLineChart("Line Graph",
+                                "Peak Time", vip, normal);
+                        xychart.pack();
+                        RefineryUtilities.centerFrameOnScreen(xychart);
+                        xychart.setVisible(true);
                         saveLog.setVisible(true);
                         saveReport.setVisible(true);
                         saveChart.setVisible(true);
@@ -109,9 +117,12 @@ public class Simulator {
                 int width = 1280;    /* Width of the image */
                 int height = 720;   /* Height of the image */
                 File file = new File("BarChart.jpeg");
+                File file2 = new File("Timeline.jpeg");
                 try {
                     ChartUtilities.saveChartAsJPEG(file, chart.barChart, width, height);
                     System.out.println("Console: Chart saved as 'BarChart.jpeg'");
+                    ChartUtilities.saveChartAsJPEG(file2, xychart.xylineChart, width, height);
+                    System.out.println("Console: Chart saved as 'Timeline.jpeg'");
                 } catch (IOException e1) {
                     System.out.println("IO Error");
                 }
@@ -268,6 +279,8 @@ public class Simulator {
                     }
                 }
             }
+            vip.add(queues[0].getSize() + checkCounterVIP());
+            normal.add(queues[1].getSize() + checkCounterNormal());
 //            display();
             logText.append("(Log) - Time: ").append(time).append(" | ");
             System.out.print("(Log) - Time: "+ time+" | ");
@@ -281,6 +294,29 @@ public class Simulator {
         }
     }
 
+    public int checkCounterVIP() {
+        int ans = 0;
+        for (int i = 0; i < counters.length; i++) {
+            if (counters[i].getServing() != null) {
+                if (counters[i].getServing().getType() == 'V') {
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int checkCounterNormal() {
+        int ans = 0;
+        for (int i = 0; i < counters.length; i++) {
+            if (counters[i].getServing() != null) {
+                if (counters[i].getServing().getType() == 'N') {
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
     public void display(){
         new Thread() {
             @Override

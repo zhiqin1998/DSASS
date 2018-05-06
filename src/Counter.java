@@ -34,6 +34,10 @@ public class Counter {
         return customerServed;
     }
 
+    public Customer getServing() {
+        return serving;
+    }
+
     public void serveCustomer(Customer serving, int time){
         this.serving = serving;
         this.serving.setStartProcessing(time);
