@@ -1,10 +1,11 @@
+import org.jfree.chart.ChartUtilities;
+import org.jfree.ui.RefineryUtilities;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Scanner;
@@ -24,12 +25,14 @@ public class Simulator {
     private JPanel queuesFrame;
     private JButton saveLog;
     private JButton saveReport;
+    BarChart chart;
     private String printText;
     private StringBuilder logText = new StringBuilder();
     private StringBuilder reportText = new StringBuilder();
     Formatter formatter = new Formatter(reportText);
     ImageIcon customerIcon = new ImageIcon("customer.png");
     ImageIcon nullIcon = new ImageIcon("null.png");
+    private JButton saveChart;
 
     public Simulator() {
         simulateBtn.addActionListener(new ActionListener() {
@@ -55,8 +58,14 @@ public class Simulator {
                             formatter.format("|%-10d|%-10d|%-20d|%-15d|%-20d|%-15d|%-8s|%-8s|\n", (i + 1), input.get(i).getArrivalTime(), input.get(i).getStartProcessing(), input.get(i).getEndProcessing(), (input.get(i).getEndProcessing() - input.get(i).getStartProcessing()), input.get(i).getWaitingTime(), type, cName);
                             System.out.printf("|%-10d|%-10d|%-20d|%-15d|%-20d|%-15d|%-8s|%-8s|\n", (i + 1), input.get(i).getArrivalTime(), input.get(i).getStartProcessing(), input.get(i).getEndProcessing(), (input.get(i).getEndProcessing() - input.get(i).getStartProcessing()), input.get(i).getWaitingTime(), type, cName);
                         }
+                        chart = new BarChart("Graph",
+                                "Counter Information Graph", counters);
+                        chart.pack();
+                        RefineryUtilities.centerFrameOnScreen(chart);
+                        chart.setVisible(true);
                         saveLog.setVisible(true);
                         saveReport.setVisible(true);
+                        saveChart.setVisible(true);
                         simulateBtn.setText("End Program");
                         simulateBtn.setVisible(true);
                     } catch (InterruptedException e1) {
@@ -94,6 +103,20 @@ public class Simulator {
 
             }
         });
+        saveChart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int width = 1280;    /* Width of the image */
+                int height = 720;   /* Height of the image */
+                File file = new File("BarChart.jpeg");
+                try {
+                    ChartUtilities.saveChartAsJPEG(file, chart.barChart, width, height);
+                    System.out.println("Console: Chart saved as 'BarChart.jpeg'");
+                } catch (IOException e1) {
+                    System.out.println("IO Error");
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -124,13 +147,13 @@ public class Simulator {
         System.out.println("Enter customer inputs: ");
         //getting input
         int N  = Integer.parseInt(sc.nextLine());
-        for (int i =0;i<N;i++) {
+        for (int i = 0; i < N; i++) {
             String[] in = sc.nextLine().split(" ");
             input.add(new Customer(Integer.parseInt(in[0]),in[1].charAt(0),Integer.parseInt(in[2])));
         }
         //bubble-sorting input based on arrival time (optional)
-        for (int i =1;i<input.size();i++){
-            for (int j=1;j<input.size()-1;j++){
+        for (int i = 1; i < input.size(); i++) {
+            for (int j = 1; j < input.size() - 1; j++) {
                 if (input.get(j).compareTo(input.get(j+1))>0){
                     Customer temp = input.get(j+1);
                     input.set(j+1,input.get(j));
@@ -147,6 +170,62 @@ public class Simulator {
         frame.setVisible(true);
 
     }
+
+    public static Counter findBestCounter(Counter[] c) {
+        Counter best = null;
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i < c.length; i++) {
+            int temp = c[i].getTimeToSell();
+            if (temp < min && c[i].isEmpty()) {
+                min = temp;
+                best = c[i];
+            }
+        }
+        return best;
+    }
+
+    public static Queue findBestQueue(Queue[] q) {
+        Queue best = null;
+        int totalTickets = Integer.MAX_VALUE;
+        for (int i = 1; i < q.length; i++) {
+            int temp = q[i].totalTicket();
+            if (temp < totalTickets) {
+                totalTickets = temp;
+                best = q[i];
+            }
+        }
+        return best;
+    }
+
+    public static boolean checkEnd(Queue[] q, Counter[] c, ArrayList<Customer> cust) {
+        for (int i = 0; i < cust.size(); i++) {
+            if (!cust.get(i).isServed()) {
+                return true;
+            }
+        }
+        for (int i = 0; i < q.length; i++) {
+            if (!q[i].isEmpty()) {
+                return true;
+            }
+        }
+        for (int i = 0; i < c.length; i++) {
+            if (!c[i].isEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean checkQueue(Queue[] q) {
+        for (int i = 0; i < q.length; i++) {
+            if (!q[i].isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void simulate() throws InterruptedException {
         //simulate
         while (checkEnd(queues,counters,input)){
@@ -155,7 +234,7 @@ public class Simulator {
 //            Thread.sleep(1000);
             time++;
             //Customer leaves counter if done
-            for (int i =0;i<counters.length;i++){
+            for (int i = 0; i < counters.length; i++) {
                 if (!counters[i].isEmpty()) {
                     if (counters[i].getEndTime() == time) {
                         counters[i].customerLeave();
@@ -164,23 +243,21 @@ public class Simulator {
                 }
             }
             //Customer enters queues based on arrival time
-            for (int i =0;i<input.size();i++){
+            for (int i = 0; i < input.size(); i++) {
                 if (input.get(i).getArrivalTime()==time && input.get(i).getType()=='N'){
                     findBestQueue(queues).enqueue(input.get(i));
                     printText+="Customer enter Normal Queue | ";
-                }
-                else if (input.get(i).getArrivalTime()==time && input.get(i).getType()=='V'){
+                } else if (input.get(i).getArrivalTime() == time && input.get(i).getType() == 'V') {
                     queues[0].enqueue(input.get(i));
                     printText+="Customer enter VIP Queue | ";
-                }
-                else if (input.get(i).getArrivalTime()>time){
+                } else if (input.get(i).getArrivalTime() > time) {
                     break;
                 }
             }
             //Customer enters counter from queues if available
             enterCounterLoop:
             while (findBestCounter(counters)!=null&&checkQueue(queues)){
-                for (int j=0;j<queues.length;j++) {
+                for (int j = 0; j < queues.length; j++) {
                     if (!queues[j].isEmpty()) {
                         for (int i = 0; i < queues[j].getSize(); i++) {
                             Counter temp = findBestCounter(counters);
@@ -197,78 +274,22 @@ public class Simulator {
             if (printText.equals("")){
                 logText.append("Nothing happened!\n");
                 System.out.println("Nothing happened!");
-            }
-            else {
+            } else {
                 logText.append(printText).append("\n");
                 System.out.println(printText);
             }
         }
     }
 
-    public static Counter findBestCounter(Counter[] c){
-        Counter best = null;
-        int min = Integer.MAX_VALUE;
-        for (int i = 0;i<c.length;i++){
-            int temp = c[i].getTimeToSell();
-            if (temp<min && c[i].isEmpty()){
-                min= temp;
-                best = c[i];
-            }
-        }
-        return best;
-    }
-
-    public static Queue findBestQueue(Queue[] q){
-        Queue best = null;
-        int totalTickets = Integer.MAX_VALUE;
-        for (int i =1;i<q.length;i++){
-            int temp = q[i].totalTicket();
-            if (temp<totalTickets){
-                totalTickets=temp;
-                best = q[i];
-            }
-        }
-        return best;
-    }
-    public static boolean checkEnd(Queue[] q, Counter[] c, ArrayList<Customer> cust){
-        for (int i =0;i<cust.size();i++){
-            if (!cust.get(i).isServed()){
-                return true;
-            }
-        }
-        for (int i =0;i<q.length;i++){
-            if (!q[i].isEmpty()){
-                return true;
-            }
-        }
-        for (int i =0;i<c.length;i++){
-            if (!c[i].isEmpty()){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static boolean checkQueue(Queue[] q){
-        for(int i =0;i<q.length;i++){
-            if (!q[i].isEmpty()){
-                return true;
-            }
-        }
-        return false;
-    }
     public void display(){
-        new Thread()
-        {
+        new Thread() {
             @Override
-            public void run()
-            {
+            public void run() {
                 timeField.setText("Time: "+time);
                 counterName = new JPanel(new FlowLayout());
                 counterFrame= new JPanel(new FlowLayout());
                 queuesFrame= new JPanel(new GridLayout(queues.length,1));
-                for (int i =0;i<counters.length;i++){
+                for (int i = 0; i < counters.length; i++) {
                     JLabel temp = new JLabel();
                     temp.setText("Counter "+ counters[i].getName());
                     counterName.add(temp);
@@ -276,16 +297,15 @@ public class Simulator {
                         JLabel temp2 = new JLabel();
                         temp2.setIcon(customerIcon);
                         counterFrame.add(temp2);
-                    }
-                    else {
+                    } else {
                         JLabel temp2 = new JLabel();
                         temp2.setIcon(nullIcon);
                         counterFrame.add(temp2);
                     }
                 }
-                for (int i =0;i<queues.length;i++){
+                for (int i = 0; i < queues.length; i++) {
                     JPanel temp = new JPanel(new FlowLayout());
-                    for (int j =0;j<queues[i].getSize();j++){
+                    for (int j = 0; j < queues[i].getSize(); j++) {
                         JLabel temp2 = new JLabel();
                         temp2.setIcon(customerIcon);
                         temp.add(temp2);

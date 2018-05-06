@@ -1,0 +1,96 @@
+(Log) - Time: 0 | Customer enter Normal Queue | Customer enters Counter A | 
+(Log) - Time: 1 | Nothing happened!
+(Log) - Time: 2 | Nothing happened!
+(Log) - Time: 3 | Nothing happened!
+(Log) - Time: 4 | Nothing happened!
+(Log) - Time: 5 | Nothing happened!
+(Log) - Time: 6 | Nothing happened!
+(Log) - Time: 7 | Nothing happened!
+(Log) - Time: 8 | Nothing happened!
+(Log) - Time: 9 | Nothing happened!
+(Log) - Time: 10 | Customer enter Normal Queue | Customer enters Counter B | 
+(Log) - Time: 11 | Nothing happened!
+(Log) - Time: 12 | Nothing happened!
+(Log) - Time: 13 | Nothing happened!
+(Log) - Time: 14 | Nothing happened!
+(Log) - Time: 15 | Nothing happened!
+(Log) - Time: 16 | Nothing happened!
+(Log) - Time: 17 | Nothing happened!
+(Log) - Time: 18 | Nothing happened!
+(Log) - Time: 19 | Nothing happened!
+(Log) - Time: 20 | Customer enter VIP Queue | Customer enters Counter D | 
+(Log) - Time: 21 | Nothing happened!
+(Log) - Time: 22 | Nothing happened!
+(Log) - Time: 23 | Nothing happened!
+(Log) - Time: 24 | Nothing happened!
+(Log) - Time: 25 | Customer enter Normal Queue | Customer enters Counter C | 
+(Log) - Time: 26 | Nothing happened!
+(Log) - Time: 27 | Nothing happened!
+(Log) - Time: 28 | Nothing happened!
+(Log) - Time: 29 | Nothing happened!
+(Log) - Time: 30 | Customer enter Normal Queue | 
+(Log) - Time: 31 | Nothing happened!
+(Log) - Time: 32 | Nothing happened!
+(Log) - Time: 33 | Nothing happened!
+(Log) - Time: 34 | Nothing happened!
+(Log) - Time: 35 | Nothing happened!
+(Log) - Time: 36 | Nothing happened!
+(Log) - Time: 37 | Nothing happened!
+(Log) - Time: 38 | Nothing happened!
+(Log) - Time: 39 | Nothing happened!
+(Log) - Time: 40 | Customer left Counter A | Customer left Counter B | Customer enters Counter A | 
+(Log) - Time: 41 | Nothing happened!
+(Log) - Time: 42 | Nothing happened!
+(Log) - Time: 43 | Nothing happened!
+(Log) - Time: 44 | Nothing happened!
+(Log) - Time: 45 | Nothing happened!
+(Log) - Time: 46 | Nothing happened!
+(Log) - Time: 47 | Nothing happened!
+(Log) - Time: 48 | Nothing happened!
+(Log) - Time: 49 | Nothing happened!
+(Log) - Time: 50 | Customer left Counter A | 
+(Log) - Time: 51 | Nothing happened!
+(Log) - Time: 52 | Nothing happened!
+(Log) - Time: 53 | Nothing happened!
+(Log) - Time: 54 | Nothing happened!
+(Log) - Time: 55 | Nothing happened!
+(Log) - Time: 56 | Nothing happened!
+(Log) - Time: 57 | Nothing happened!
+(Log) - Time: 58 | Nothing happened!
+(Log) - Time: 59 | Nothing happened!
+(Log) - Time: 60 | Nothing happened!
+(Log) - Time: 61 | Nothing happened!
+(Log) - Time: 62 | Nothing happened!
+(Log) - Time: 63 | Nothing happened!
+(Log) - Time: 64 | Nothing happened!
+(Log) - Time: 65 | Nothing happened!
+(Log) - Time: 66 | Nothing happened!
+(Log) - Time: 67 | Nothing happened!
+(Log) - Time: 68 | Nothing happened!
+(Log) - Time: 69 | Nothing happened!
+(Log) - Time: 70 | Nothing happened!
+(Log) - Time: 71 | Nothing happened!
+(Log) - Time: 72 | Nothing happened!
+(Log) - Time: 73 | Nothing happened!
+(Log) - Time: 74 | Nothing happened!
+(Log) - Time: 75 | Nothing happened!
+(Log) - Time: 76 | Nothing happened!
+(Log) - Time: 77 | Nothing happened!
+(Log) - Time: 78 | Nothing happened!
+(Log) - Time: 79 | Nothing happened!
+(Log) - Time: 80 | Nothing happened!
+(Log) - Time: 81 | Nothing happened!
+(Log) - Time: 82 | Nothing happened!
+(Log) - Time: 83 | Nothing happened!
+(Log) - Time: 84 | Nothing happened!
+(Log) - Time: 85 | Customer left Counter C | 
+(Log) - Time: 86 | Nothing happened!
+(Log) - Time: 87 | Nothing happened!
+(Log) - Time: 88 | Nothing happened!
+(Log) - Time: 89 | Nothing happened!
+(Log) - Time: 90 | Nothing happened!
+(Log) - Time: 91 | Nothing happened!
+(Log) - Time: 92 | Nothing happened!
+(Log) - Time: 93 | Nothing happened!
+(Log) - Time: 94 | Nothing happened!
+(Log) - Time: 95 | Customer left Counter D | 

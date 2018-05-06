@@ -1,0 +1,6 @@
+|Customer  |Arrival   |Start Processing    |End Processing |Processing Time     |Waiting Time   |Queue   |Counter |
+|1         |0         |0                   |40             |40                  |0              |Normal  |A       |
+|2         |10        |10                  |40             |30                  |0              |Normal  |B       |
+|3         |20        |20                  |95             |75                  |0              |VIP     |D       |
+|4         |25        |25                  |85             |60                  |0              |Normal  |C       |
+|5         |30        |40                  |50             |10                  |10             |Normal  |A       |
