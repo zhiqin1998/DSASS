@@ -2,7 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.Scanner;
 
 public class Simulator {
@@ -18,7 +22,12 @@ public class Simulator {
     private JPanel counterName;
     private JPanel counterFrame;
     private JPanel queuesFrame;
+    private JButton saveLog;
+    private JButton saveReport;
     private String printText;
+    private StringBuilder logText = new StringBuilder();
+    private StringBuilder reportText = new StringBuilder();
+    Formatter formatter = new Formatter(reportText);
     ImageIcon customerIcon = new ImageIcon("customer.png");
     ImageIcon nullIcon = new ImageIcon("null.png");
 
@@ -26,43 +35,93 @@ public class Simulator {
         simulateBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    simulateBtn.setVisible(false);
-                    simulate();
-                    System.out.println("Simulation Ended\n");
-                    System.out.println("Total Completion Time: "+ time);
-                    System.out.println("-------------------------------------------------------------------------------------------------------------------");
-                    System.out.printf("|%-10s|%-10s|%-20s|%-15s|%-20s|%-15s|%-8s|%-8s|\n","Customer","Arrival","Start Processing","End Processing","Processing Time","Waiting Time", "Queue", "Counter");
-                    for (int i=0;i<input.size();i++){
-                        String type, cName;
-                        if (input.get(i).getType()=='V'){
-                            type = "VIP";
+                if (simulateBtn.getText().equals("Simulate")) {
+                    try {
+                        simulateBtn.setVisible(false);
+                        simulate();
+                        System.out.println("Console: Simulation Ended\n");
+                        System.out.println("Total Completion Time: " + time);
+                        System.out.println("-------------------------------------------------------------------------------------------------------------------");
+                        System.out.printf("|%-10s|%-10s|%-20s|%-15s|%-20s|%-15s|%-8s|%-8s|\n", "Customer", "Arrival", "Start Processing", "End Processing", "Processing Time", "Waiting Time", "Queue", "Counter");
+                        formatter.format("|%-10s|%-10s|%-20s|%-15s|%-20s|%-15s|%-8s|%-8s|\n", "Customer", "Arrival", "Start Processing", "End Processing", "Processing Time", "Waiting Time", "Queue", "Counter");
+                        for (int i = 0; i < input.size(); i++) {
+                            String type, cName;
+                            if (input.get(i).getType() == 'V') {
+                                type = "VIP";
+                            } else {
+                                type = "Normal";
+                            }
+                            cName = input.get(i).getCounter().getName();
+                            formatter.format("|%-10d|%-10d|%-20d|%-15d|%-20d|%-15d|%-8s|%-8s|\n", (i + 1), input.get(i).getArrivalTime(), input.get(i).getStartProcessing(), input.get(i).getEndProcessing(), (input.get(i).getEndProcessing() - input.get(i).getStartProcessing()), input.get(i).getWaitingTime(), type, cName);
+                            System.out.printf("|%-10d|%-10d|%-20d|%-15d|%-20d|%-15d|%-8s|%-8s|\n", (i + 1), input.get(i).getArrivalTime(), input.get(i).getStartProcessing(), input.get(i).getEndProcessing(), (input.get(i).getEndProcessing() - input.get(i).getStartProcessing()), input.get(i).getWaitingTime(), type, cName);
                         }
-                        else{
-                            type = "Normal";
-                        }
-                        cName = Character.toString(input.get(i).getCounter().getName());
-                        System.out.printf("|%-10d|%-10d|%-20d|%-15d|%-20d|%-15d|%-8s|%-8s|\n",(i+1),input.get(i).getArrivalTime(),input.get(i).getStartProcessing(),input.get(i).getEndProcessing(),(input.get(i).getEndProcessing()-input.get(i).getStartProcessing()),input.get(i).getWaitingTime(), type, cName);
+                        saveLog.setVisible(true);
+                        saveReport.setVisible(true);
+                        simulateBtn.setText("End Program");
+                        simulateBtn.setVisible(true);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
                     }
+                } else {
                     System.exit(0);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
                 }
+            }
+        });
+        saveLog.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    PrintWriter pw = new PrintWriter(new FileOutputStream("log.txt"));
+                    pw.print(logText.toString());
+                    System.out.println("Console: Saved log files.");
+                    pw.close();
+                } catch (FileNotFoundException e1) {
+                    System.out.println("IO error");
+                }
+            }
+        });
+        saveReport.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    PrintWriter pw = new PrintWriter(new FileOutputStream("report.txt"));
+                    pw.print(reportText.toString());
+                    System.out.println("Console: Saved report files.");
+                    pw.close();
+                } catch (FileNotFoundException e1) {
+                    System.out.println("IO error");
+                }
+
             }
         });
     }
 
     public static void main(String[] args) {
         //initializing variables
-        for (int i =0;i<queues.length;i++){
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i < queues.length; i++) {
             queues[i] = new Queue();
         }
-        counters[0] = new Counter('A',10);
-        counters[1] = new Counter('B',15);
-        counters[2] = new Counter('C',30);
-        counters[3] = new Counter('D',15);
-        Scanner sc = new Scanner(System.in);
+        System.out.print("Use default counter settings? (y/n): ");
+        if (sc.nextLine().equals("n")) {
+            System.out.print("Enter numbers of counter: ");
+            counters = new Counter[Integer.parseInt(sc.nextLine())];
+            for (int i = 1; i <= counters.length; i++) {
+                System.out.print("Enter name of counter " + i + ": ");
+                String name = sc.nextLine();
+                System.out.print("Enter time to sell for the counter " + i + ": ");
+                int timeToSell = Integer.parseInt(sc.nextLine());
+                counters[i - 1] = new Counter(name, timeToSell);
+                System.out.println();
+            }
+        } else {
 
+            counters[0] = new Counter("A", 10);
+            counters[1] = new Counter("B", 15);
+            counters[2] = new Counter("C", 30);
+            counters[3] = new Counter("D", 15);
+        }
+        System.out.println("Enter customer inputs: ");
         //getting input
         int N  = Integer.parseInt(sc.nextLine());
         for (int i =0;i<N;i++) {
@@ -133,11 +192,14 @@ public class Simulator {
                 }
             }
 //            display();
+            logText.append("(Log) - Time: ").append(time).append(" | ");
             System.out.print("(Log) - Time: "+ time+" | ");
             if (printText.equals("")){
+                logText.append("Nothing happened!\n");
                 System.out.println("Nothing happened!");
             }
             else {
+                logText.append(printText).append("\n");
                 System.out.println(printText);
             }
         }

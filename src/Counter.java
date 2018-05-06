@@ -1,6 +1,6 @@
 public class Counter {
     private int timeToSell;
-    private char name;
+    private String name;
     private Customer serving=null;
 
     public int getTimeToSell() {
@@ -11,7 +11,7 @@ public class Counter {
         return this.serving.getEndProcessing();
     }
 
-    public Counter(char name, int timeToSell){
+    public Counter(String name, int timeToSell) {
         this.name = name;
 
         this.timeToSell = timeToSell;
@@ -25,7 +25,7 @@ public class Counter {
         this.serving.setServed(true);
     }
 
-    public char getName() {
+    public String getName() {
         return name;
     }
 
