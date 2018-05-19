@@ -1,4 +1,5 @@
 # Queueing-Simulator
+===
 
 # Brief Description
 A queueing simulator created for my Data Structure course assignment.
@@ -50,7 +51,6 @@ All set! Click "Simulate" to begin!
 Console: Simulation Ended
 
 Total Completion Time: 95
-
 -------------------------------------------------------------------------------------------------------------------
 |Customer  |Arrival   |Start Processing    |End Processing |Processing Time     |Waiting Time   |Queue   |Counter |
 |1         |0         |0                   |40             |40                  |0              |Normal  |A       |
