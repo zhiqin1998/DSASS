@@ -25,7 +25,7 @@ Simulation can be done either in real time or skip to results.
 Counter information are shown in bar chart whereas customer information are shown in XY line chart.
 
 # Sample Input
-
+```
 Use default counter settings? (y/n): y
 Enter customer inputs: 
 5
@@ -35,9 +35,9 @@ Enter customer inputs:
 25 N 2
 30 N 1
 All set! Click "Simulate" to begin!
-
+```
 # Sample Output
-
+```
 (Log) - Time: 0 | Customer enter Normal Queue | Customer enters Counter A |
 (Log) - Time: 10 | Customer enter Normal Queue | Customer enters Counter B |
 (Log) - Time: 20 | Customer enter VIP Queue | Customer enters Counter D | 
@@ -59,5 +59,5 @@ Total Completion Time: 95
 |4         |25        |25                  |85             |60                  |0              |Normal  |C       |
 |5         |30        |40                  |50             |10                  |10             |Normal  |A       |
 
-
+```
 ** Code might be messy due to short time **
