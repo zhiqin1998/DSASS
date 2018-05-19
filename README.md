@@ -1,5 +1,5 @@
 # Queueing-Simulator
-===
+
 
 # Brief Description
 A queueing simulator created for my Data Structure course assignment.
