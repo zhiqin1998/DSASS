@@ -38,8 +38,8 @@ All set! Click "Simulate" to begin!
 
 # Sample Output
 
-(Log) - Time: 0 | Customer enter Normal Queue | Customer enters Counter A | 
-(Log) - Time: 10 | Customer enter Normal Queue | Customer enters Counter B | 
+(Log) - Time: 0 | Customer enter Normal Queue | Customer enters Counter A |
+(Log) - Time: 10 | Customer enter Normal Queue | Customer enters Counter B |
 (Log) - Time: 20 | Customer enter VIP Queue | Customer enters Counter D | 
 (Log) - Time: 25 | Customer enter Normal Queue | Customer enters Counter C | 
 (Log) - Time: 30 | Customer enter Normal Queue | 
@@ -50,6 +50,7 @@ All set! Click "Simulate" to begin!
 Console: Simulation Ended
 
 Total Completion Time: 95
+
 -------------------------------------------------------------------------------------------------------------------
 |Customer  |Arrival   |Start Processing    |End Processing |Processing Time     |Waiting Time   |Queue   |Counter |
 |1         |0         |0                   |40             |40                  |0              |Normal  |A       |
